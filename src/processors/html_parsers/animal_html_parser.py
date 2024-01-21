@@ -1,10 +1,10 @@
 from bs4 import BeautifulSoup, SoupStrainer
 from typing_extensions import Self
 
-from src.html_parsers.base_html_parser import BaseHTMLParser
+from src.processors.html_parsers.base_html_parser import BaseHTMLParser
 
 
-class AnimalWikiPageHTMLParser(BaseHTMLParser):
+class AnimalHTMLParser(BaseHTMLParser):
     """This parser reference parser to https://en.wikipedia.org/wiki/<animal_page_name>"""
 
     def __init__(self, soup: BeautifulSoup, resource_url: str):
@@ -15,7 +15,7 @@ class AnimalWikiPageHTMLParser(BaseHTMLParser):
         image_meta_tag = self.soup.find("meta", property="og:image")
         try:
             image_url = image_meta_tag.get("content")
-            return self.get_full_url(image_url)
+            return self._get_full_url(image_url)
         except AttributeError as e:
             raise ValueError(f"Failed to find image url at {self.resource_url}") from e
 

@@ -1,4 +1,4 @@
-# WikiAnimalHarvester
+# Wiki Animals Processor
 This program is designed to extract and output "collateral adjectives" and their corresponding "animals" from the Wikipedia page ["List of animal names"](https://en.wikipedia.org/wiki/List_of_animal_names). The program identifies each animal and its associated collateral adjectives. If an animal is associated with more than one collateral adjective, each is used and mentioned accordingly.
 
 ## Features

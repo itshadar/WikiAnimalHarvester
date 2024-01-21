@@ -1,7 +1,7 @@
 import pytest
 
-from src.html_parsers.animals_page_html_parser import AnimalsPageWikiHTMLParser
-from src.html_parsers.utils import ParsedAnimalData
+from src.processors.html_parsers.animals_html_parser import AnimalsHTMLParser
+from src.processors.html_parsers.schemas import ParsedAnimalData
 
 
 @pytest.fixture()
@@ -33,17 +33,17 @@ def mock_html_content():
 
 
 @pytest.fixture()
-def mock_animals_page_html_parser(mock_html_content):
-    return AnimalsPageWikiHTMLParser.create(
+def mock_animals_html_parser(mock_html_content):
+    return AnimalsHTMLParser.create(
         html_content=mock_html_content, resource_url="https://test"
     )
 
 
-class TestAnimalsPageHTMLParser:
-    def test_parse_animal_table(self, mock_animals_page_html_parser):
+class TestAnimalsHTMLParser:
+    def test_parse_animal_table(self, mock_animals_html_parser):
         parsed_animals = [
             parsed_animal
-            for parsed_animal in mock_animals_page_html_parser.parse_animal_table()
+            for parsed_animal in mock_animals_html_parser.parse_animal_table()
         ]
         excepted_parsed_animals = [
             ParsedAnimalData(

@@ -5,17 +5,18 @@ from bs4 import BeautifulSoup, SoupStrainer, Tag
 from pydantic import ValidationError
 from typing_extensions import Self
 
-from src.html_parsers.base_html_parser import BaseHTMLParser
-from src.html_parsers.utils import (
-    AnimalTableHeaders,
-    AnimalTableHTMLSetting,
-    ParsedAnimalData,
+from src.processors.html_parsers.base_html_parser import BaseHTMLParser
+from src.processors.html_parsers.constants import (
+    AnimalsTableHeaders,
+    AnimalsTableHTMLSetting,
 )
+from src.processors.html_parsers.schemas import ParsedAnimalData
+
 
 logger = logging.getLogger(__name__)
 
 
-class AnimalsPageWikiHTMLParser(BaseHTMLParser):
+class AnimalsHTMLParser(BaseHTMLParser):
     """
     This parser reference parser to "https://en.wikipedia.org/wiki/List_of_animal_names"
     """
@@ -32,8 +33,8 @@ class AnimalsPageWikiHTMLParser(BaseHTMLParser):
     def parse_animal_table(self) -> Iterator[ParsedAnimalData]:
         """Parse the html animal table."""
         table = self._get_table(
-            span_id=AnimalTableHTMLSetting.SPAN_ID,
-            table_class=AnimalTableHTMLSetting.TABLE_CLASS,
+            span_id=AnimalsTableHTMLSetting.SPAN_ID,
+            table_class=AnimalsTableHTMLSetting.TABLE_CLASS,
         )
         if table:
             table_headers = self._get_table_headers(table)
@@ -51,8 +52,8 @@ class AnimalsPageWikiHTMLParser(BaseHTMLParser):
     def _validate_animal_table_headers(cls, table_headers: dict[str, int]) -> None:
         """Validates animal table headers."""
         missing_headers = {
-            AnimalTableHeaders.ANIMAL,
-            AnimalTableHeaders.COLLATERAL_ADJECTIVE,
+            AnimalsTableHeaders.ANIMAL,
+            AnimalsTableHeaders.COLLATERAL_ADJECTIVE,
         }.difference(table_headers)
 
         if len(missing_headers) > 0:
@@ -78,7 +79,7 @@ class AnimalsPageWikiHTMLParser(BaseHTMLParser):
     ) -> Optional[list[str]]:
         """Extract collateral adjectives values, without references."""
         collateral_adjectives_cell = cells[
-            table_headers[AnimalTableHeaders.COLLATERAL_ADJECTIVE]
+            table_headers[AnimalsTableHeaders.COLLATERAL_ADJECTIVE]
         ]
 
         # Remove references
@@ -97,10 +98,10 @@ class AnimalsPageWikiHTMLParser(BaseHTMLParser):
     def _extract_animal_info(
         self, cells: list[Tag], table_headers: dict[str, int]
     ) -> tuple[Optional[str], Optional[str]]:
-        animal_cell = cells[table_headers[AnimalTableHeaders.ANIMAL]]
+        animal_cell = cells[table_headers[AnimalsTableHeaders.ANIMAL]]
         try:
             animal_a_tag = animal_cell.find("a")
-            animal_page_url, animal_name = self.get_full_url(
+            animal_page_url, animal_name = self._get_full_url(
                 animal_a_tag.get("href")
             ), animal_a_tag.get("title")
             return animal_page_url, animal_name

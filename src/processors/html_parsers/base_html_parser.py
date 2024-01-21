@@ -18,10 +18,6 @@ class BaseHTMLParser(ABC):
         self.soup = soup
         self.resource_url = resource_url
 
-    def get_full_url(self, link: str) -> str:
-        """Return the full URL that the link refer to based on the resource page URL."""
-        return urljoin(self.resource_url, link)
-
     @classmethod
     @abstractmethod
     def create(cls, html_content: str, resource_url: str) -> Self:
@@ -34,3 +30,7 @@ class BaseHTMLParser(ABC):
         :return: An instance of the subclass.
         """
         pass
+
+    def _get_full_url(self, link: str) -> str:
+        """Return the full URL that the link refer to based on the resource page URL."""
+        return urljoin(self.resource_url, link)
