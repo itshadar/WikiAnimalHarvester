@@ -24,6 +24,3 @@ Clone the repository and navigate to the project directory. Run the following co
 
 ### Testing
 ```pipenv run pytest .```
-
-
-

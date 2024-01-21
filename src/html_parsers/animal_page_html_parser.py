@@ -1,6 +1,7 @@
-from src.html_parsers.base_html_parser import BaseHTMLParser
-from bs4 import SoupStrainer, BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
 from typing_extensions import Self
+
+from src.html_parsers.base_html_parser import BaseHTMLParser
 
 
 class AnimalWikiPageHTMLParser(BaseHTMLParser):
@@ -21,5 +22,5 @@ class AnimalWikiPageHTMLParser(BaseHTMLParser):
     @classmethod
     def create(cls, html_content, resource_url) -> Self:
         strainer = SoupStrainer(["meta"])
-        soup = BeautifulSoup(html_content, 'lxml', parse_only=strainer)
+        soup = BeautifulSoup(html_content, "lxml", parse_only=strainer)
         return cls(soup=soup, resource_url=resource_url)

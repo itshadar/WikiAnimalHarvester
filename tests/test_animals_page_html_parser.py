@@ -1,4 +1,5 @@
 import pytest
+
 from src.html_parsers.animals_page_html_parser import AnimalsPageWikiHTMLParser
 from src.html_parsers.utils import ParsedAnimalData
 
@@ -11,7 +12,7 @@ def mock_html_content():
     <table class="wikitable sortable" style="text-align:left;">
     <tbody>
     <tr>
-    <th>Animal</th>    
+    <th>Animal</th>
     <th>Collateral adjective</th>
     </tr>
     <tr>
@@ -33,23 +34,33 @@ def mock_html_content():
 
 @pytest.fixture()
 def mock_animals_page_html_parser(mock_html_content):
-    return AnimalsPageWikiHTMLParser.create(html_content=mock_html_content, resource_url="https://test")
+    return AnimalsPageWikiHTMLParser.create(
+        html_content=mock_html_content, resource_url="https://test"
+    )
 
 
 class TestAnimalsPageHTMLParser:
-
     def test_parse_animal_table(self, mock_animals_page_html_parser):
-
-        parsed_animals = [parsed_animal for parsed_animal in mock_animals_page_html_parser.parse_animal_table()]
-        excepted_parsed_animals = [ParsedAnimalData(name="Animal1",
-                                                    collateral_adjectives=["Test1"],
-                                                    page_url="https://test/wiki/Animal1"),
-                                   ParsedAnimalData(name="Animal2",
-                                                    collateral_adjectives=["Test2"],
-                                                    page_url="https://test/wiki/Animal2"),
-                                   ParsedAnimalData(name="Animal3",
-                                                    collateral_adjectives=["Test2"],
-                                                    page_url="https://test/wiki/Animal3")
-                                   ]
+        parsed_animals = [
+            parsed_animal
+            for parsed_animal in mock_animals_page_html_parser.parse_animal_table()
+        ]
+        excepted_parsed_animals = [
+            ParsedAnimalData(
+                name="Animal1",
+                collateral_adjectives=["Test1"],
+                page_url="https://test/wiki/Animal1",
+            ),
+            ParsedAnimalData(
+                name="Animal2",
+                collateral_adjectives=["Test2"],
+                page_url="https://test/wiki/Animal2",
+            ),
+            ParsedAnimalData(
+                name="Animal3",
+                collateral_adjectives=["Test2"],
+                page_url="https://test/wiki/Animal3",
+            ),
+        ]
 
         assert excepted_parsed_animals == parsed_animals
