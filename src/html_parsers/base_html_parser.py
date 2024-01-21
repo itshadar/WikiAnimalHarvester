@@ -1,6 +1,7 @@
-from bs4 import BeautifulSoup
-from urllib.parse import urljoin
 from abc import ABC, abstractmethod
+from urllib.parse import urljoin
+
+from bs4 import BeautifulSoup
 from typing_extensions import Self
 
 

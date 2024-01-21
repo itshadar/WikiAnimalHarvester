@@ -1,9 +1,11 @@
 from asyncio import Queue
-from pathlib import Path
-from src.services.async_http_client import HTTPXClient
-from aiofiles import open as aio_open
 from logging import getLogger
+from pathlib import Path
 from typing import Tuple
+
+from aiofiles import open as aio_open
+
+from src.services.async_http_client import HTTPXClient
 
 logger = getLogger(__name__)
 
@@ -31,5 +33,5 @@ class ImageDownloader:
         logger.info(f"Saved image to: {file_path}")
 
     async def save_image(self, image_file_path: Path, data: bytes):
-        async with aio_open(image_file_path, mode='wb') as file:
+        async with aio_open(image_file_path, mode="wb") as file:
             await file.write(data)
